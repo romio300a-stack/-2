@@ -38,7 +38,7 @@
     outline-offset:3px;
   }
   @media (prefers-reduced-motion:reduce){ *{animation:none !important; transition:none !important;} }
-
+ 
   /* ---------- ticker strip ---------- */
   .ticker{
     background:var(--maroon-2);
@@ -66,7 +66,7 @@
     from{transform:translateX(0);}
     to{transform:translateX(-100%);}
   }
-
+ 
   /* ---------- top bar ---------- */
   header.topbar{
     display:flex;
@@ -105,7 +105,7 @@
     border-radius:100px;
     letter-spacing:1px;
   }
-
+ 
   /* ---------- hero: asymmetric split ---------- */
   .hero{
     position:relative;
@@ -181,7 +181,7 @@
     transition:background .2s ease, transform .2s ease;
   }
   .hero .cta:hover{background:var(--amber-light); transform:translateY(-2px);}
-
+ 
   .hero .visual{
     position:relative;
     z-index:1;
@@ -210,7 +210,7 @@
   .hero .visual .frame::after{bottom:-1px; left:-1px; border-width:0 0 1px 1px;}
   .hero .visual .crest{width:140px; height:150px;}
   .hero .visual .crest svg{width:100%; height:100%; filter:drop-shadow(0 0 18px rgba(212,175,55,0.3));}
-
+ 
   /* ---------- links section ---------- */
   section.links{
     max-width:760px;
@@ -236,7 +236,7 @@
     font-size:0.8rem;
     color:var(--muted);
   }
-
+ 
   .link-row{
     display:flex;
     align-items:center;
@@ -289,7 +289,7 @@
     font-size:1.2rem;
     transform:scaleX(-1);
   }
-
+ 
   .empty-hint{
     text-align:center;
     color:var(--muted);
@@ -300,14 +300,14 @@
     font-size:0.92rem;
     display:none;
   }
-
+ 
   footer{
     padding:36px 26px 30px;
     text-align:center;
     border-top:1px solid var(--line);
   }
   footer .fine{font-size:0.78rem; color:#6b5f4a;}
-
+ 
   /* ---------- hidden admin access ---------- */
   .admin-fab{
     position:fixed;
@@ -327,7 +327,7 @@
   }
   .admin-fab.visible{display:flex;}
   .admin-fab:hover{border-color:var(--amber); color:var(--amber-light);}
-
+ 
   .modal-overlay{
     position:fixed; inset:0;
     background:rgba(4,3,2,0.85);
@@ -412,7 +412,7 @@
 </style>
 </head>
 <body>
-
+ 
 <div class="ticker" aria-hidden="true">
   <div class="ticker-track">
     <span>سنتر النخبة</span>
@@ -423,7 +423,7 @@
     <span>تابعونا أول بأول</span>
   </div>
 </div>
-
+ 
 <header class="topbar">
   <div class="brand">
     <span class="brand-mark">
@@ -445,7 +445,7 @@
   </div>
   <span class="dept-badge">قسم التجارة</span>
 </header>
-
+ 
 <section class="hero">
   <div class="copy">
     <div class="eyebrow">فريق التجارة</div>
@@ -484,7 +484,7 @@
     </div>
   </div>
 </section>
-
+ 
 <section class="links" id="links">
   <div class="section-head">
     <h2>قنوات المتابعة</h2>
@@ -493,18 +493,18 @@
   <div id="linkList"><!-- rendered by JS --></div>
   <div class="empty-hint" id="emptyHint">هتضاف قنوات المتابعة قريبًا من الإدارة.</div>
 </section>
-
+ 
 <footer>
   <div class="fine">© سنتر النخبة — قسم التجارة — منذ 1999</div>
 </footer>
-
+ 
 <button class="admin-fab" id="adminFab" title="لوحة التحكم" aria-label="لوحة التحكم">⚙</button>
-
+ 
 <div class="modal-overlay" id="adminOverlay">
   <div class="modal">
     <span class="close-x" id="closeAdmin">×</span>
     <div style="clear:both;"></div>
-
+ 
     <div id="loginView">
       <h4>لوحة التحكم</h4>
       <p class="sub">الدخول متاح للأدمن بس، لإضافة أو تعديل أو حذف روابط المتابعة.</p>
@@ -515,11 +515,11 @@
       <button class="btn" id="loginBtn">دخول</button>
       <p class="msg error" id="loginMsg"></p>
     </div>
-
+ 
     <div id="panelView" style="display:none;">
       <h4 id="formTitle">إضافة رابط جديد</h4>
       <p class="sub">اختار المنصة، اكتب الاسم اللي هيظهر، والصق الرابط.</p>
-
+ 
       <div class="field">
         <label for="platformSelect">المنصة</label>
         <select id="platformSelect">
@@ -544,30 +544,28 @@
         <button class="btn ghost" id="cancelEditBtn" style="display:none;">إلغاء التعديل</button>
       </div>
       <p class="msg" id="addMsg"></p>
-
+ 
       <div class="manage-list">
         <h5>كل الروابط الحالية</h5>
         <div id="manageList"></div>
       </div>
-
+ 
       <div style="margin-top:18px;">
         <button class="btn ghost" id="logoutBtn">خروج</button>
       </div>
     </div>
   </div>
 </div>
-
+ 
 <script>
 (function(){
   "use strict";
-
-  /* ============================================================
-     اتصال بالـ Backend المركزي بدل localStorage
-     غيّر BACKEND_URL بعد ما تنشر الباك إند على Vercel
-     ============================================================ */
-  var BACKEND_URL = "https://nokhba-backend.vercel.app"; // TODO: حط رابط الباك إند الحقيقي هنا
-  var SITE_ID = "site2"; // ثابت لهذا الموقع — لا تغيّره
-
+ 
+  /* ----- connected to the real backend now (no more localStorage) ----- */
+  var API_BASE = "https://nokhba-backend.vercel.app";
+  var SITE_ID = "site2";
+  var SECRET_HASH = "#nokhba-tejara-admin"; // only people with this exact link can reach the login form
+ 
   var PLATFORM_META = {
     facebook:{ name:"فيسبوك", icon:iconFacebook() },
     telegram:{ name:"تليجرام", icon:iconTelegram() },
@@ -576,38 +574,28 @@
     instagram:{ name:"انستجرام", icon:iconInstagram() },
     other:{ name:"رابط", icon:iconLink() }
   };
-
-  var SECRET_HASH = "#nokhba-tejara-admin"; // only people with this exact link can reach the login form
-
+ 
   function iconFacebook(){return '<svg viewBox="0 0 24 24"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5 3.66 9.15 8.44 9.94v-7.03H7.9v-2.91h2.54V9.86c0-2.5 1.49-3.89 3.77-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56v1.87h2.78l-.44 2.91h-2.34V22c4.78-.79 8.44-4.94 8.44-9.94Z"/></svg>';}
   function iconTelegram(){return '<svg viewBox="0 0 24 24"><path d="M21.9 4.7 18.5 20.1c-.26 1.15-.94 1.43-1.9.9l-5.25-3.87-2.53 2.44c-.28.28-.52.52-1.06.52l.38-5.4L18.02 6.6c.4-.35-.09-.55-.62-.2L6.7 13.1 1.5 11.47c-1.13-.35-1.15-1.13.24-1.68L20.5 3.06c.94-.35 1.76.21 1.4 1.64Z"/></svg>';}
   function iconWhatsapp(){return '<svg viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.9c0 1.87.5 3.62 1.44 5.14L2 22l5.13-1.53a9.85 9.85 0 0 0 4.9 1.3h.01c5.46 0 9.9-4.44 9.9-9.9C21.95 6.45 17.5 2 12.04 2Zm5.79 14.06c-.24.68-1.4 1.3-1.93 1.36-.5.06-1.08.09-1.74-.11a17.1 17.1 0 0 1-1.63-.6c-2.87-1.24-4.74-4.14-4.88-4.33-.14-.19-1.17-1.56-1.17-2.98s.73-2.1.99-2.39c.26-.29.57-.36.76-.36h.55c.18 0 .42-.07.65.5.24.58.82 2 .89 2.15.07.15.12.32.02.52-.1.19-.15.31-.29.48-.14.17-.3.37-.43.5-.14.14-.29.29-.13.57.17.29.75 1.24 1.61 2.01 1.11 1 2.05 1.31 2.34 1.46.29.14.46.12.63-.07.17-.19.72-.85.92-1.14.19-.29.38-.24.63-.14.26.1 1.65.78 1.93.92.29.14.48.22.55.34.07.12.07.68-.17 1.36Z"/></svg>';}
   function iconTiktok(){return '<svg viewBox="0 0 24 24"><path d="M16.6 2h-3.3v13.4a2.9 2.9 0 1 1-2.06-2.78V9.2a6.1 6.1 0 1 0 5.36 6.05V8.9a7.9 7.9 0 0 0 4.4 1.34V6.9a4.4 4.4 0 0 1-4.4-4.4Z"/></svg>';}
   function iconInstagram(){return '<svg viewBox="0 0 24 24"><path d="M12 2c2.72 0 3.06.01 4.13.06 1.07.05 1.8.22 2.44.47.66.26 1.22.6 1.77 1.16.55.55.9 1.11 1.16 1.77.25.63.42 1.37.47 2.44.05 1.07.06 1.4.06 4.13s-.01 3.06-.06 4.13c-.05 1.07-.22 1.8-.47 2.44a4.9 4.9 0 0 1-1.16 1.77 4.9 4.9 0 0 1-1.77 1.16c-.63.25-1.37.42-2.44.47-1.07.05-1.4.06-4.13.06s-3.06-.01-4.13-.06c-1.07-.05-1.8-.22-2.44-.47a4.9 4.9 0 0 1-1.77-1.16 4.9 4.9 0 0 1-1.16-1.77c-.25-.63-.42-1.37-.47-2.44C2.01 15.06 2 14.72 2 12s.01-3.06.06-4.13c.05-1.07.22-1.8.47-2.44.26-.66.6-1.22 1.16-1.77A4.9 4.9 0 0 1 5.46 2.5c.63-.25 1.37-.42 2.44-.47C8.97 2.01 9.31 2 12 2Zm0 1.8c-2.67 0-2.99.01-4.04.06-.87.04-1.34.18-1.65.3-.42.16-.71.35-1.02.66-.31.31-.5.6-.66 1.02-.12.31-.26.78-.3 1.65C4.28 8.54 4.27 8.86 4.27 11.53v.94c0 2.67.01 2.99.06 4.04.04.87.18 1.34.3 1.65.16.42.35.71.66 1.02.31.31.6.5 1.02.66.31.12.78.26 1.65.3 1.05.05 1.37.06 4.04.06s2.99-.01 4.04-.06c.87-.04 1.34-.18 1.65-.3.42-.16.71-.35 1.02-.66.31-.31.5-.6.66-1.02.12-.31.26-.78.3-1.65.05-1.05.06-1.37.06-4.04v-.94c0-2.67-.01-2.99-.06-4.04-.04-.87-.18-1.34-.3-1.65a2.7 2.7 0 0 0-.66-1.02 2.7 2.7 0 0 0-1.02-.66c-.31-.12-.78-.26-1.65-.3C14.99 3.81 14.67 3.8 12 3.8Zm0 3.06a5.14 5.14 0 1 1 0 10.28 5.14 5.14 0 0 1 0-10.28Zm0 1.8a3.34 3.34 0 1 0 0 6.68 3.34 3.34 0 0 0 0-6.68Zm5.34-2.06a1.2 1.2 0 1 1 0 2.4 1.2 1.2 0 0 1 0-2.4Z"/></svg>';}
   function iconLink(){return '<svg viewBox="0 0 24 24"><path d="M10.6 13.4a1 1 0 0 1 0-1.4l3-3a3 3 0 1 1 4.24 4.24l-1.5 1.5a1 1 0 1 1-1.41-1.41l1.5-1.5a1 1 0 1 0-1.42-1.42l-3 3a1 1 0 0 1-1.41 0Zm-4.24 4.24a3 3 0 0 1 0-4.24l1.5-1.5a1 1 0 1 1 1.41 1.41l-1.5 1.5a1 1 0 1 0 1.42 1.42l3-3a1 1 0 0 1 1.41 1.41l-3 3a3 3 0 0 1-4.24 0Z"/></svg>';}
-
+ 
   function esc(s){
     var d = document.createElement("div");
     d.innerText = s;
     return d.innerHTML;
   }
-
-  function makeId(){
-    return "l" + Date.now().toString(36) + Math.random().toString(36).slice(2,6);
-  }
-
-  /* -------- طبقة الاتصال بالباك إند -------- */
-  function api(path, options){
+ 
+  function apiFetch(path, options){
     options = options || {};
-    options.credentials = "include"; // عشان كوكي الجلسة (JWT) يتبعت ويترجع
-    if(options.body && typeof options.body !== "string"){
-      options.body = JSON.stringify(options.body);
-    }
+    options.credentials = "include";
     options.headers = Object.assign({ "Content-Type": "application/json" }, options.headers || {});
-    return fetch(BACKEND_URL + path, options).then(function(res){
+    return fetch(API_BASE + path, options).then(function(res){
       return res.json().catch(function(){ return {}; }).then(function(data){
         if(!res.ok){
-          var err = new Error(data && data.error ? data.error : "حصل خطأ، حاول تاني.");
+          var err = new Error((data && data.error) || "خطأ في السيرفر");
           err.status = res.status;
           throw err;
         }
@@ -615,113 +603,107 @@
       });
     });
   }
-
-  var cachedLinks = [];
-
-  function fetchLinks(){
-    return api("/api/links?site=" + encodeURIComponent(SITE_ID), { method:"GET" })
-      .then(function(data){
-        cachedLinks = data.links || [];
-        return cachedLinks;
-      })
-      .catch(function(){
-        cachedLinks = [];
-        return cachedLinks;
-      });
-  }
-
+ 
+  var currentLinks = [];
+ 
   function renderLinks(){
     var listEl = document.getElementById("linkList");
     var emptyEl = document.getElementById("emptyHint");
     var countEl = document.getElementById("countLabel");
-
-    return fetchLinks().then(function(all){
-      listEl.innerHTML = "";
-      countEl.textContent = all.length ? (all.length + " رابط") : "";
-
-      if(all.length === 0){
-        emptyEl.style.display = "block";
-        return;
-      }
-      emptyEl.style.display = "none";
-
-      all.forEach(function(item, i){
-        var meta = PLATFORM_META[item.platform] || PLATFORM_META.other;
-        var a = document.createElement("a");
-        a.className = "link-row";
-        a.href = item.url;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-        a.innerHTML =
-          '<span class="idx">' + String(i+1).padStart(2,"0") + '</span>' +
-          '<span class="chip">' + meta.icon + '</span>' +
-          '<span class="info">' +
-            '<span class="platform">' + esc(meta.name) + '</span>' +
-            '<span class="label">' + esc(item.label) + '</span>' +
-          '</span>' +
-          '<span class="go" aria-hidden="true">‹</span>';
-        listEl.appendChild(a);
-      });
+ 
+    listEl.innerHTML = "";
+    countEl.textContent = currentLinks.length ? (currentLinks.length + " رابط") : "";
+ 
+    if(currentLinks.length === 0){
+      emptyEl.style.display = "block";
+      return;
+    }
+    emptyEl.style.display = "none";
+ 
+    currentLinks.forEach(function(item, i){
+      var meta = PLATFORM_META[item.platform] || PLATFORM_META.other;
+      var a = document.createElement("a");
+      a.className = "link-row";
+      a.href = item.url;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.innerHTML =
+        '<span class="idx">' + String(i+1).padStart(2,"0") + '</span>' +
+        '<span class="chip">' + meta.icon + '</span>' +
+        '<span class="info">' +
+          '<span class="platform">' + esc(meta.name) + '</span>' +
+          '<span class="label">' + esc(item.label) + '</span>' +
+        '</span>' +
+        '<span class="go" aria-hidden="true">‹</span>';
+      listEl.appendChild(a);
     });
   }
-
+ 
+  function loadLinks(){
+    return apiFetch("/api/links?site=" + SITE_ID, { method:"GET" })
+      .then(function(data){
+        currentLinks = data.links || [];
+        renderLinks();
+      })
+      .catch(function(e){
+        console.error("تعذر تحميل الروابط:", e);
+        currentLinks = [];
+        renderLinks();
+      });
+  }
+ 
   var editingId = null;
-
+ 
   function renderManageList(){
     var wrap = document.getElementById("manageList");
-    wrap.innerHTML = '<p style="color:var(--muted); font-size:0.82rem;">بيتحمّل...</p>';
-
-    return fetchLinks().then(function(all){
-      wrap.innerHTML = "";
-      if(all.length === 0){
-        wrap.innerHTML = '<p style="color:var(--muted); font-size:0.82rem;">لسه مفيش روابط.</p>';
-        return;
-      }
-      all.forEach(function(item){
-        var row = document.createElement("div");
-        row.className = "manage-item";
-        var meta = PLATFORM_META[item.platform] || PLATFORM_META.other;
-        row.innerHTML =
-          '<span>' + esc(meta.name) + ' — ' + esc(item.label) + '</span>' +
-          '<span class="btns">' +
-            '<button class="edit-btn" data-edit="' + item.id + '">تعديل</button>' +
-            '<button data-del="' + item.id + '">حذف</button>' +
-          '</span>';
-        wrap.appendChild(row);
+    wrap.innerHTML = "";
+    if(currentLinks.length === 0){
+      wrap.innerHTML = '<p style="color:var(--muted); font-size:0.82rem;">لسه مفيش روابط.</p>';
+      return;
+    }
+    currentLinks.forEach(function(item){
+      var row = document.createElement("div");
+      row.className = "manage-item";
+      var meta = PLATFORM_META[item.platform] || PLATFORM_META.other;
+      row.innerHTML =
+        '<span>' + esc(meta.name) + ' — ' + esc(item.label) + '</span>' +
+        '<span class="btns">' +
+          '<button class="edit-btn" data-edit="' + item.id + '">تعديل</button>' +
+          '<button data-del="' + item.id + '">حذف</button>' +
+        '</span>';
+      wrap.appendChild(row);
+    });
+    wrap.querySelectorAll("button[data-del]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.getAttribute("data-del");
+        var msg = document.getElementById("addMsg");
+        apiFetch("/api/links/" + id, { method:"DELETE" })
+          .then(function(){ return loadLinks(); })
+          .then(function(){ renderManageList(); })
+          .catch(function(e){
+            msg.className = "msg error";
+            msg.textContent = e.message || "تعذر الحذف.";
+          });
       });
-      wrap.querySelectorAll("button[data-del]").forEach(function(btn){
-        btn.addEventListener("click", function(){
-          var id = btn.getAttribute("data-del");
-          btn.disabled = true;
-          api("/api/links/" + encodeURIComponent(id), { method:"DELETE" })
-            .then(function(){
-              return Promise.all([renderManageList(), renderLinks()]);
-            })
-            .catch(function(e){
-              alert(e.message || "معرفتش أحذف الرابط.");
-              btn.disabled = false;
-            });
-        });
-      });
-      wrap.querySelectorAll("button[data-edit]").forEach(function(btn){
-        btn.addEventListener("click", function(){
-          var id = btn.getAttribute("data-edit");
-          var item = cachedLinks.find(function(l){ return l.id === id; });
-          if(!item) return;
-          editingId = id;
-          document.getElementById("platformSelect").value = item.platform;
-          document.getElementById("labelInput").value = item.label;
-          document.getElementById("urlInput").value = item.url;
-          document.getElementById("formTitle").textContent = "تعديل الرابط";
-          document.getElementById("addLinkBtn").textContent = "حفظ التعديل";
-          document.getElementById("cancelEditBtn").style.display = "block";
-          document.getElementById("addMsg").textContent = "";
-          document.querySelector(".modal").scrollTop = 0;
-        });
+    });
+    wrap.querySelectorAll("button[data-edit]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        var id = btn.getAttribute("data-edit");
+        var item = currentLinks.find(function(l){ return l.id === id; });
+        if(!item) return;
+        editingId = id;
+        document.getElementById("platformSelect").value = item.platform;
+        document.getElementById("labelInput").value = item.label;
+        document.getElementById("urlInput").value = item.url;
+        document.getElementById("formTitle").textContent = "تعديل الرابط";
+        document.getElementById("addLinkBtn").textContent = "حفظ التعديل";
+        document.getElementById("cancelEditBtn").style.display = "block";
+        document.getElementById("addMsg").textContent = "";
+        document.querySelector(".modal").scrollTop = 0;
       });
     });
   }
-
+ 
   function resetForm(){
     editingId = null;
     document.getElementById("platformSelect").value = "facebook";
@@ -731,24 +713,29 @@
     document.getElementById("addLinkBtn").textContent = "إضافة الرابط";
     document.getElementById("cancelEditBtn").style.display = "none";
   }
-
+ 
   document.getElementById("cancelEditBtn").addEventListener("click", function(){
     resetForm();
     document.getElementById("addMsg").textContent = "";
   });
-
+ 
+  /* ----- admin access: hidden entry + real backend session (httpOnly cookie) ----- */
   var overlay = document.getElementById("adminOverlay");
   var loginView = document.getElementById("loginView");
   var panelView = document.getElementById("panelView");
   var fab = document.getElementById("adminFab");
-
-  /* بدل ما كانت isRecognizedAdmin بتقرا من localStorage، دلوقتي بتسأل الباك إند */
-  function checkAuth(){
-    return api("/api/auth/me", { method:"GET" })
-      .then(function(data){ return !!(data && data.authenticated && data.site === SITE_ID); })
+ 
+  function checkSession(){
+    return apiFetch("/api/auth/me", { method:"GET" })
+      .then(function(data){
+        var authed = !!(data && data.authenticated && data.site === SITE_ID);
+        if(authed) fab.classList.add("visible");
+        else fab.classList.remove("visible");
+        return authed;
+      })
       .catch(function(){ return false; });
   }
-
+ 
   function openPanel(){
     overlay.classList.add("open");
     loginView.style.display = "none";
@@ -763,62 +750,54 @@
     document.getElementById("adminPass").value = "";
     document.getElementById("loginMsg").textContent = "";
   }
-
-  checkAuth().then(function(ok){
-    if(ok) fab.classList.add("visible");
-  });
-
+ 
   fab.addEventListener("click", function(){
-    checkAuth().then(function(ok){
-      if(ok) openPanel();
+    checkSession().then(function(authed){
+      if(authed) openPanel();
       else openLogin();
     });
   });
-
+ 
   if(window.location.hash === SECRET_HASH){
     openLogin();
     history.replaceState(null, "", window.location.pathname + window.location.search);
   }
-
+ 
   document.getElementById("closeAdmin").addEventListener("click", function(){
     overlay.classList.remove("open");
   });
   overlay.addEventListener("click", function(e){
     if(e.target === overlay) overlay.classList.remove("open");
   });
-
+ 
   document.getElementById("loginBtn").addEventListener("click", function(){
     var val = document.getElementById("adminPass").value;
     var msg = document.getElementById("loginMsg");
-    var btn = document.getElementById("loginBtn");
-    btn.disabled = true;
     msg.textContent = "";
-    api("/api/auth/login", { method:"POST", body:{ site: SITE_ID, password: val } })
-      .then(function(){
-        fab.classList.add("visible");
-        openPanel();
-      })
-      .catch(function(e){
-        msg.textContent = e.status === 401 ? "كلمة المرور غلط، جرّب تاني." : (e.message || "حصل خطأ، حاول تاني.");
-      })
-      .finally(function(){ btn.disabled = false; });
+    apiFetch("/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify({ site: SITE_ID, password: val })
+    }).then(function(){
+      fab.classList.add("visible");
+      openPanel();
+    }).catch(function(e){
+      msg.textContent = e.message || "كلمة المرور غلط، جرّب تاني.";
+    });
   });
-
+ 
   document.getElementById("logoutBtn").addEventListener("click", function(){
-    api("/api/auth/logout", { method:"POST" })
-      .finally(function(){
-        fab.classList.remove("visible");
-        overlay.classList.remove("open");
-      });
+    apiFetch("/api/auth/logout", { method: "POST" }).finally(function(){
+      fab.classList.remove("visible");
+      overlay.classList.remove("open");
+    });
   });
-
+ 
   document.getElementById("addLinkBtn").addEventListener("click", function(){
     var platform = document.getElementById("platformSelect").value;
     var label = document.getElementById("labelInput").value.trim();
     var url = document.getElementById("urlInput").value.trim();
     var msg = document.getElementById("addMsg");
-    var btn = document.getElementById("addLinkBtn");
-
+ 
     if(!label || !url){
       msg.className = "msg error";
       msg.textContent = "من فضلك اكتب الاسم والرابط.";
@@ -830,27 +809,29 @@
       msg.textContent = "الرابط لازم يبدأ بـ https:// وميكونش فيه أخطاء.";
       return;
     }
-
-    btn.disabled = true;
-    var req = editingId
-      ? api("/api/links/" + encodeURIComponent(editingId), { method:"PUT", body:{ platform:platform, label:label, url:url } })
-      : api("/api/links", { method:"POST", body:{ platform:platform, label:label, url:url } });
-
-    req.then(function(){
+ 
+    var body = JSON.stringify({ platform: platform, label: label, url: url });
+    var request = editingId
+      ? apiFetch("/api/links/" + editingId, { method: "PUT", body: body })
+      : apiFetch("/api/links", { method: "POST", body: body });
+ 
+    request.then(function(){
       msg.className = "msg ok";
       msg.textContent = editingId ? "تم حفظ التعديل." : "تمت إضافة الرابط.";
       resetForm();
-      return Promise.all([renderManageList(), renderLinks()]);
+      return loadLinks();
+    }).then(function(){
+      renderManageList();
     }).catch(function(e){
       msg.className = "msg error";
-      msg.textContent = e.message || "حصل خطأ، حاول تاني.";
-    }).finally(function(){
-      btn.disabled = false;
+      msg.textContent = e.message || "حصل خطأ، جرّب تاني.";
     });
   });
-
-  renderLinks();
+ 
+  loadLinks();
+  checkSession();
 })();
 </script>
 </body>
 </html>
+ 
